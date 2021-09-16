@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     public float jumpForce;
     public float speed = 0;
+    public float distance;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
     
@@ -16,7 +17,8 @@ public class PlayerController : MonoBehaviour
     private float movementX;
     private float movementY;
     private int count;
-    
+    private bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,10 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue movementValue)
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 
     void OnMove(InputValue movementValue)
@@ -53,6 +58,13 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
         
         rb.AddForce(movement * speed);
+    }
+
+    private void Update()
+    {
+        isGrounded = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), distance);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * (distance) , Color.red);
+        Debug.Log(isGrounded);
     }
 
     private void OnTriggerEnter(Collider other)
