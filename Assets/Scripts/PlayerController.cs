@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     void OnFire(InputValue movementValue)
     {
-        anim.Play("Frog");
+        anim.Play("Scene");
     }
     
     void OnJump(InputValue movementValue)
