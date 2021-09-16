@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public float jumpForce;
     public float speed = 0;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
@@ -24,6 +25,11 @@ public class PlayerController : MonoBehaviour
         
         SetCountText();
         winTextObject.SetActive(false);
+    }
+
+    void OnJump(InputValue movementValue)
+    {
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
     void OnMove(InputValue movementValue)
