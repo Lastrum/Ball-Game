@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float distance;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
+    public GameObject crown;
+    public Animation anim;
     
     private Rigidbody rb;
     private float movementX;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        crown.SetActive(false);
         rb = GetComponent<Rigidbody>();
         count = 0;
         
@@ -29,6 +32,11 @@ public class PlayerController : MonoBehaviour
         winTextObject.SetActive(false);
     }
 
+    void OnFire(InputValue movementValue)
+    {
+        anim.Play("Frog");
+    }
+    
     void OnJump(InputValue movementValue)
     {
         if (isGrounded)
@@ -62,9 +70,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), distance);
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * (distance) , Color.red);
-        Debug.Log(isGrounded);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, distance);
+        Debug.DrawRay(transform.position, Vector3.down * (distance) , Color.red);
+       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -75,5 +83,12 @@ public class PlayerController : MonoBehaviour
             count++;
             SetCountText();
         }
+
+        if (other.CompareTag("Crown"))
+        {
+            other.gameObject.SetActive(false);
+            crown.SetActive(true);
+        }
     }
+    
 }
